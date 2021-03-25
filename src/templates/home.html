@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+ <b>{{ TEST1 }}</b>
+
+    {% for link in links.items %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='img/' + link.author.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_links', username=link.author.username) }}">{{ link.author.username }}</a>
+        <!--      <a class="mr-2" href="#">{{ link.author.username }}</a>-->
+              <small class="text-muted">{{ link.date_linked.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('links.link', link_id=link.id) }}">{{ link.title }}</a></h2>
+            <p class="article-content">{{ link.content }}</p>
+          </div>
+        </article>
+    {% endfor %}
+
+
+{% endblock content %}

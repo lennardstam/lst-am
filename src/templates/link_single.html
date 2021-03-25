@@ -1,0 +1,45 @@
+    {% extends "layout.html" %}
+{% block content %}
+
+<article class="media content-section">
+
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ link.url.username }}</a>
+<!--      <a class="mr-2" href="#">{{ link.url.username }}</a>-->
+      <small class="text-muted">{{ link.created.strftime('%Y-%m-%d') }}</small>
+        {% if link.url == current_user %}
+            <div class="">
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('main.edit_link', id=link.id) }}">Update</a>
+                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            </div>
+        {% endif %}
+    </div>
+    <h2 class="article-title">{{ link.url_short }}</h2>
+    <p class="article-content">{{ link.url_org }}</p>
+    <a href="{{ url_for('main.link_create') }}{{ link.url_short }}" target="_blank">{{ link.url_short }}</a>
+    <span>{{ link.clicks }}</span>
+  </div>
+</article>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete link?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="#" method="link">
+              <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

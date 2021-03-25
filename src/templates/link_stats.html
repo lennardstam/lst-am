@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+
+        {% for link in links %}
+
+                <div class="card mb-3">
+                <div class="card-header">
+                {{ link.created.strftime('%Y-%m-%d') }}
+                </div>
+                <div class="card-body">
+                <h5 class="card-title">
+                {{ url_for('main.redirect_url', url_short=link.url_short, _external=True) }}
+                </h5>
+                <p class="card-text">
+                {{ link.url_org }}
+                </p>
+                <h6><span class="badge bg-secondary bg-light text-dark px-2">
+                {{ link.clicks }}
+                </span><span class="badge bg-secondary bg-light text-dark px-2">
+                {{ link.url.username }}
+                </span><span>
+                <a href="{{ url_for('main.edit_link', id=link.id) }}">{{ link.id }}</a>
+                </span></h6>
+
+                </div></div>
+
+        {% endfor %}
+
+        </div>
+    </section>
+
+{% endblock content %}

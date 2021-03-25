@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<!--    <h1>link_create.html</h1>-->
+
+    <div class="content-section">
+        <form method="post" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ legend }}</legend>
+                <div class="form-group">
+                   {{ form.url_org.label(class="form-control-label") }}
+                   {{ form.url_org(class="form-control form-control-lg") }}
+                </div>
+            </fieldset>
+
+
+            <fieldset class="form-group">
+                <div class="form-group">
+                   {{ form.url_short.label(class="form-control-label") }}
+                   {{ form.url_short(class="form-control form-control-lg") }}
+                <a href="{{ url_for('main.link_create') }}{{ url_short }}" target="_blank">{{ url_short }}</a>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <div>You will be redirected to:</div>
+            <div class="card-body">
+            <p class="card-text"> {{redirect_path}} shortly...</p>
+            </div>
+        </div>
+
+    <script>
+        setTimeout(function() {
+            window.location.replace("{{redirect_path}}");
+        }, 2000);
+    </script>
+
+{% endblock content %}
