@@ -1,14 +1,27 @@
-{% extends "layout.html" %}
+<!doctype html>
 
-{% block content %}
+<div lang="en">
+<head>
+    <meta charset="utf-8">
 
-    <div class="card">
-        <div class="card-header">
-            <div>You will be redirected to:</div>
-            <div class="card-body">
-            <p class="card-text"> {{redirect_path}} shortly...</p>
-            </div>
+    <title>The HTML5 Herald</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+</head>
+
+<div class="redirect-container">
+
+    <article class="media content-section">
+        <div class="article-metadata">
+            <h4 class="article-title">You will be redirected to:</h4>
         </div>
+            <p class="article-content">  {{redirect_path}} shortly... </p>
+        </div>
+    </article>
+
+</div>
 
     <script>
         setTimeout(function() {
@@ -16,4 +29,6 @@
         }, 2000);
     </script>
 
-{% endblock content %}
+
+</body>
+</html>

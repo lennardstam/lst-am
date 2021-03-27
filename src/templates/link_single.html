@@ -17,7 +17,7 @@
     </div>
     <h2 class="article-title">{{ link.url_short }}</h2>
     <p class="article-content">{{ link.url_org }}</p>
-    <a href="{{ url_for('main.link_create') }}{{ link.url_short }}" target="_blank">{{ link.url_short }}</a>
+    <a href="{{ url_for('main.new_link') }}{{ link.url_short }}" target="_blank">{{ link.url_short }}</a>
     <span>{{ link.clicks }}</span>
   </div>
 </article>
