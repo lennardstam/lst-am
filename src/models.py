@@ -4,6 +4,7 @@ from datetime import datetime
 from random import choices
 from flask_login import UserMixin, AnonymousUserMixin
 
+from src import bcrypt
 from .extensions import db, login_manager
 
 
@@ -40,6 +41,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     link = db.relationship('Link', backref='url', lazy=True)
 
     # def get_reset_token(self, expires_sec=1800):
@@ -48,6 +50,13 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.username}, {self.email}')"
+
+    def admin_user():
+        if not User.query.filter(User.username == 'admin').first():
+            hashed_password = bcrypt.generate_password_hash('admin').decode('utf-8')
+            user1 = User(username='admin', password=hashed_password, email='admin@demo.com')
+            db.session.add(user1)
+            db.session.commit()
 
 
 class Link(db.Model):
@@ -78,6 +87,14 @@ class Link(db.Model):
 
         return url_short
 
+    # def count(self):
+    #     links = self.query.filter_by(user_id=self.user_id).count()
+    #     return links
+    #     # link_vol = Link.query.filter_by(user_id=user.id).all()
+
     # def anonymous(AnonymousUserMixin):
     #     def __init__(self):
     #         self.username = 'Demo'
+
+
+

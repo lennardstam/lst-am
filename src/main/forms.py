@@ -6,19 +6,19 @@ from src.models import Link
 
 
 class UrlCreated(FlaskForm):
-    url_org = StringField(' Original URL ', validators=[DataRequired(), URL()])
-    url_short = StringField(' New URL ', validators=[DataRequired(), URL()])
+    url_org = StringField(' Original URL ', validators=[DataRequired(), URL()], render_kw={"placeholder": "Shorten your link."})
+    url_short = StringField(' New URL ', render_kw={"placeholder": "..."})
 
 
 class UrlCreate(FlaskForm):
-    url_org = StringField('Shorten', validators=[DataRequired(), URL()], render_kw={"placeholder": "Shorten your link."})
-    url_short = StringField(' New URL ')
-    submit = SubmitField('GO')
+    url_org = StringField('Shorten', validators=[DataRequired(), URL()], render_kw={"placeholder": "https://..."})
+    url_short = StringField('New URL', render_kw={"placeholder": "."})
+    submit = SubmitField('Submit')
 
 
 class LinkUpdate(FlaskForm):
     url_org = StringField('Original Url', validators=[DataRequired(), URL()])
-    url_short = StringField('Short Url')
+    url_short = StringField('Short Url', validators=[DataRequired()], render_kw={"placeholder": "."})
     submit = SubmitField('Update')
 
     # def validate_url(self, url_short):

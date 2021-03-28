@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+
+        {% for user in users %}
+
+
+
+                <div class="card mb-3">
+                <div class="card-header">
+                    {{ user.created.strftime('%Y-%m-%d') }} |
+                User ID #{{ user.id }} |
+                Links created #{{ link_vol }}
+                </div>
+                <div class="card-body">
+                <h5 class="card-title">
+                {{ url_for('main.redirect_url', url_short=user.url_short, _external=True) }}
+                </h5>
+                <p class="card-text">
+                {{ user.username }}
+                </p>
+                <h6><span class="badge bg-secondary bg-light text-dark px-2">
+                {{ user.clicks }}
+                </span><span class="badge bg-secondary bg-light text-dark px-2">
+                {{ user.username }}
+                </span><span>
+                </span></h6>
+                <a href="{{ url_for('users.edit_user', id=user.id) }}">Update user</a>
+                <a href="{{ url_for('main.dashboard_single', id=user.id) }}">User links</a>
+                </div></div>
+
+
+        {% endfor %}
+
+        </div>
+    </section>
+
+{% endblock content %}

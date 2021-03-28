@@ -1,26 +1,66 @@
     {% extends "layout.html" %}
 {% block content %}
 
-<article class="media content-section">
 
-  <div class="media-body">
-    <div class="article-metadata">
-      <a class="mr-2" href="#">{{ link.url.username }}</a>
-<!--      <a class="mr-2" href="#">{{ link.url.username }}</a>-->
-      <small class="text-muted">{{ link.created.strftime('%Y-%m-%d') }}</small>
-        {% if link.url == current_user %}
-            <div class="">
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('main.edit_link', id=link.id) }}">Update</a>
-                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+<!--        {% if link.url == current_user or current_user.username == "admin" %}-->
+<!--        {% endif %}-->
+
+
+<!--START-->
+
+
+    <div class="content-section">
+<!--        <form method="POST" action="{{ url_for('main.edit_link', id=link.id) }}">-->
+<!--        <form method="POST" action="{{ url_for('main.single_link') }}">-->
+                <form method="post" action="" enctype="multipart/form-data">
+
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+<!--                <legend class="border-bottom mb-4">{{ legend }}</legend>-->
+                <small>{{ link.url.username }}</small> |
+                <small class="text-muted">date: {{ link.created.strftime('%Y-%m-%d') }}</small> |
+                <small class="text-muted">clicks: {{ link.clicks }}</small>
+
+                <div class="form-group">
+<!--                    {{ form.url_org.label(class="form-control-label") }}-->
+                    {% if form.url_org.errors %}
+                        {{ form.url_org(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.url_org.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.url_org(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                    <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">{{ request.host_url }}</span>
+                    {{ form.url_short(class="form-control form-control-lg is-invalid") }}
+                    </div>
+            </fieldset>
+
+
+
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-secondary btn-sm mt-1 mb-1") }}
+<!--                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('main.edit_link', id=link.id) }}">Update</a>-->
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('main.new_link') }}{{ link.url_short }}" target="_blank">visit</a>
+                <button type="button" class="btn btn-danger btn-sm mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+
             </div>
-        {% endif %}
+        </form>
     </div>
-    <h2 class="article-title">{{ link.url_short }}</h2>
-    <p class="article-content">{{ link.url_org }}</p>
-    <a href="{{ url_for('main.new_link') }}{{ link.url_short }}" target="_blank">{{ link.url_short }}</a>
-    <span>{{ link.clicks }}</span>
-  </div>
-</article>
+
+<!--END-->
+
+
+
+
+
+
+
 
 
 <!-- Modal -->
@@ -35,9 +75,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <form action="#" method="link">
-              <input class="btn btn-danger" type="submit" value="Delete">
-          </form>
+            <form action="{{ url_for('main.drop_link', id=link.id) }}" method="post">
+            <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
       </div>
     </div>
   </div>

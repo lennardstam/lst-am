@@ -20,6 +20,7 @@
                    {{ form.url_short.label(class="form-control-label") }}
                    {{ form.url_short(class="form-control form-control-lg") }}
                 <a href="{{ url_for('main.new_link') }}{{ url_short }}" target="_blank">{{ url_short }}</a>
+                <a href="{{ url_for('main.edit_link', id=id) }}">{{ id }}</a>
                 </div>
             </fieldset>
 

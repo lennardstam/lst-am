@@ -17,7 +17,8 @@ def create_app(config_file='settings.py'):
 
     app.register_blueprint(main, url_prefix='/')
     app.register_blueprint(errors)
-    app.register_blueprint(users)
+    app.register_blueprint(users, url_prefix='/user')
+
 
     return app
 
