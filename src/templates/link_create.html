@@ -1,30 +1,50 @@
-{% extends 'layout.html' %}
-
+{% extends "layout.html" %}
 {% block content %}
 
-<!--    <h1>First create result page</h1>-->
+<!--    <h1>link_create_1.html "/" </h1>-->
+
+
     <div class="content-section">
         <form method="post" action="">
+
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">{{ legend }}</legend>
                 <div class="form-group">
-                   {{ form.url_org.label(class="form-control-label")  }}
-                   {{ form.url_org(class="form-control form-control-lg") }}
+                    {{ form.url_org.label(class="form-control-label") }}
+                    {% if form.url_org.errors %}
+                        {{ form.url_org(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.url_org.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.url_org(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group mb-4">
+                    {{ form.url_short.label(class="form-control-label") }}
+                    {% if form.url_short.errors %}
+                        {{ form.url_short(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.url_short.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.url_short(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
             </fieldset>
 
-
-            <fieldset class="form-group">
-                <div class="form-group">
-                   {{ form.url_short.label(class="form-control-label") }}
-                   {{ form.url_short(class="form-control form-control-lg") }}
-                <a href="{{ url_for('main.new_link') }}{{ url_short }}" target="_blank">{{ url_short }}</a>
-                <a href="{{ url_for('main.edit_link', id=id) }}">{{ id }}</a>
-                </div>
-            </fieldset>
-
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
         </form>
     </div>
+
+
+
 
 {% endblock content %}

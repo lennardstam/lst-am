@@ -8,10 +8,10 @@
 
 <!--START-->
 
+    <h1>link_single.html</h1>
 
     <div class="content-section">
 <!--        <form method="POST" action="{{ url_for('main.edit_link', id=link.id) }}">-->
-<!--        <form method="POST" action="{{ url_for('main.single_link') }}">-->
                 <form method="post" action="" enctype="multipart/form-data">
 
             {{ form.hidden_tag() }}
@@ -36,7 +36,16 @@
                 </div>
                     <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon3">{{ request.host_url }}</span>
+                    {% if form.url_short.errors %}
+                        {{ form.url_short(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.url_short.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
                     {{ form.url_short(class="form-control form-control-lg is-invalid") }}
+                        {% endif %}
                     </div>
             </fieldset>
 
