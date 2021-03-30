@@ -1,15 +1,3 @@
-{% extends "layout.html" %}
-{% block content %}
-
-<!--    <h1>link_create_1.html "/" </h1>-->
-
-
-    <div class="content-section">
-        <form method="post" action="">
-
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">{{ legend }}</legend>
                 <div class="form-group">
                     {{ form.url_org.label(class="form-control-label") }}
                     {% if form.url_org.errors %}
@@ -23,6 +11,7 @@
                         {{ form.url_org(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
                 <div class="form-group mb-4">
                     {{ form.url_short.label(class="form-control-label") }}
                     {% if form.url_short.errors %}
@@ -36,15 +25,3 @@
                         {{ form.url_short(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-            </fieldset>
-
-            <div class="form-group">
-                {{ form.submit(class="btn btn-primary") }}
-            </div>
-        </form>
-    </div>
-
-
-
-
-{% endblock content %}

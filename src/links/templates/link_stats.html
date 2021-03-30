@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!--    <section class="section">-->
+        <div class="content-section">
+
+                    <legend class="border-bottom mb-4"> Stored Links </legend>
+
+            <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+<!--                    <th scope="col">#</th>-->
+                    <th scope="col">Created</th>
+                    <th scope="col">URL long</th>
+                    <th scope="col">URL short</th>
+                    <th scope="col">Visits</th>
+<!--                {% if current_user.is_authenticated and current_user.id == 1 %}-->
+<!--                    <th scope="col">User</th>-->
+<!--                {% endif %}-->
+                </tr>
+            </thead>
+            <tbody>
+
+        {% for link in links %}
+
+                <tr>
+                    <td>
+                    {{ link.created.strftime('%Y-%m-%d') }}
+                    </th><td>
+                        <a href="{{ url_for('links.edit_link', id=link.id) }}">{{ link.url_org }}</a>
+                    </th><td>
+<!--                        <a href="{{ url_for('links.edit_link', id=link.id) }}">{{ url_for('links.redirect_url', url_short=link.url_short, _external=True) }}</a>-->
+                        <a href="{{ url_for('links.new_link') }}{{ link.url_short }}" target="_blank">{{ url_for('links.redirect_url', url_short=link.url_short, _external=True) }}</a>
+                    </th><td>
+                    {{ link.clicks }}
+                    </th>
+<!--                {% if current_user.is_authenticated and current_user.id == 1 %}-->
+<!--                    <td>-->
+<!--                    {{ link.url.username }}-->
+<!--                    </th>-->
+                {% endif %}
+<!--                    <td>-->
+<!--                    <a href="{{ url_for('links.edit_link', id=link.id) }}">{{ link.id }}</a>-->
+<!--                    </th>-->
+                </tr>
+        {% endfor %}
+
+            </tbody>
+            </table>
+
+
+        </div>
+<!--    </section>-->
+
+{% endblock content %}

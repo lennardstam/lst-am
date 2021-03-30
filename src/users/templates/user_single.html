@@ -7,12 +7,26 @@
 <article class="media content-section">
   <div class="media-body">
 
+            <ol class="list-group list-group-numbered pb-5">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                    <div class="account-heading">{{ form.username.data }}</div>
+                         <small class="text-muted">
+                        {{ form.email.data }}
+                         </small>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{ link_total }}</span>
+                </li>
+            </ol>
+
+
+
 <!--form-->
 
         <form method="post" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">User ID:{{ user.id }}</legend>
+<!--                <legend class="border-bottom mb-4">User ID:{{ user.id }}</legend>-->
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
 
@@ -27,7 +41,7 @@
                         {{ form.username(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div>
+                <div class="form-group mb-4">
                     {{ form.email.label(class="form-control-label") }}
 
                     {% if form.email.errors %}
@@ -44,14 +58,16 @@
             </fieldset>
 
 <!--buttons-->
-    <div class="article-metadata">
-            <div class="">
-                {{ form.submit(class="btn btn-secondary btn-sm mt-1 mb-1") }}
-                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+    <!--    <div class="article-metadata">-->
+            <div class="form-group">
+                <div class="">
+                    {{ form.submit(class="btn btn-primary btn-sm") }}
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                </div>
             </div>
-    </div>
 
-</form>
+        </form>
+    </div>
 </article>
 
 

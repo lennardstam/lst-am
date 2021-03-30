@@ -29,6 +29,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
+.site-header .navbar-nav .nav-link.disabled {
+  color: #FF6A00;
+}
+
 .content-section {
   background: #ffffff;
   padding: 10px 20px;
@@ -50,12 +54,6 @@ a.article-title:hover {
   white-space: pre-line;
 }
 
-.article-img {
-  height: 65px;
-  width: 65px;
-  margin-right: 16px;
-}
-
 .article-metadata {
   padding-bottom: 1px;
   margin-bottom: 4px;
@@ -73,12 +71,6 @@ a.article-title:hover {
   vertical-align: middle;
 }
 
-.account-img {
-  height: 125px;
-  width: 125px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-}
 
 .account-heading {
   font-size: 2.5rem;

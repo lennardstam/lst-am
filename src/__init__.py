@@ -1,7 +1,7 @@
 from flask import Flask
 
 from .extensions import db, bcrypt, login_manager
-from .main.routes import main
+from .links.routes import main
 from .users.routes import users
 from .errors.handlers import errors
 
