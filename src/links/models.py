@@ -31,6 +31,22 @@ class Link(db.Model):
             return self.generate_short_link()
         return url_short
 
+    # @staticmethod
+    # def test(users):
+    #     link_count = Link.query.filter(Link.user_id == users[i].id).count()
+    #     return link_count
+
+    @staticmethod
+    def test(users):
+    # def test():
+    #     users = Link.query.all()
+        users = {}
+        for user in users:
+            link_count = Link.query.filter(Link.user_id == user.id).count()
+            return link_count + 'WTF'
+    #     return link_count
+        # flash(f'{link_count}')
+
     # def count(self):
     #     links = self.query.filter_by(user_id=self.user_id).count()
     #     return links

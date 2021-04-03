@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
+from sqlalchemy import func
+
 from src import db, bcrypt
 from src.users.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from src.users.models import User
@@ -13,8 +15,8 @@ users = Blueprint('users', __name__, template_folder='templates')
 def all_users():
     if current_user.id != 1:
         abort(403)
-    users = User.query.all()
-    return render_template('user_stats.html', title='Users', users=users)
+    link_count = db.session.query(User, Link, func.count(Link.id)).outerjoin(Link, User.id == Link.user_id).group_by(User.id).all()
+    return render_template('user_stats.html', title='Users', users=users, link_count=link_count)
 
 
 @users.route("/register", methods=['GET', 'POST'])
@@ -29,8 +31,8 @@ def register():
     if current_user.id != 1:
         abort(403)
     if form.validate_on_submit():
-        hashed_password= User.password_create()
-        # hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        # hashed_password= User.password_create()
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()

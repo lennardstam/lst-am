@@ -79,8 +79,8 @@ def dashboard_single(id):
     if current_user.id != 1:
         abort(403)
     links = Link.query.filter(Link.user_id == id).all()
-    link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
-    return render_template('link_stats.html', title='Dashboard', links=links, link_count=link_count)
+    # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
+    return render_template('link_stats.html', title='Dashboard', links=links) #, link_count=link_count)
 
 
 @main.route('/link/list')
@@ -89,9 +89,9 @@ def stats():
     links = Link.query.filter(Link.user_id == current_user.id).all()
     if not links:
         flash('no entries yet', 'success')
-    link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
+    # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
     # flash(f'{user_acc}')
-    return render_template('link_stats.html', title='Dashboard', links=links, link_count=link_count)
+    return render_template('link_stats.html', title='Dashboard', links=links) # , link_count=link_count)
 
 
 @main.route("/link/<int:id>", methods=['GET', 'POST'])

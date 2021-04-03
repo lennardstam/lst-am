@@ -11,32 +11,34 @@
             <table class="table table-sm">
             <thead>
                 <tr >
-                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Created</th>
-<!--                    <th scope="col">Link</th>-->
-<!--                    <th scope="col">links</th>-->
                     <th scope="col">Links</th>
-<!--                    <th scope="col">User</th>-->
                 </tr>
             </thead>
             <tbody>
 
-        {% for user in users %}
 
-                <tr>
-                    <th>
-                        {{ user.id }}
-                    </th><td>
-                        <a href="{{ url_for('users.edit_user', id=user.id) }}">{{ user.username }}</a>
-                    </td><td>
-                       {{ user.created.strftime('%Y-%m-%d') }}
-                    </td><td>
-                        <a href="{{ url_for('links.dashboard_single', id=user.id) }}">edit</a>
-                    </td>
-                </tr>
+
+        {% for link in link_count %}
+
+            <tr>
+                <td>
+                    {{ link[0].id }}
+                </td><td>
+                    <a href="{{ url_for('users.edit_user', id=link[0].id) }}">{{ link[0].username }}</a>
+                </td><td>
+                    {{ link[0].created.strftime('%Y-%m-%d') }}
+                </td><td>
+                    <a href="{{ url_for('links.dashboard_single', id=link[0].id) }}">{{ link[2] }}</a>
+                </td>
+            </tr>
 
         {% endfor %}
+
+
+
 
             </tbody>
             </table>
@@ -45,11 +47,4 @@
     </section>
 
 {% endblock content %}
-<!--                    </th><td>-->
-<!--                Links created #{{ link_vol }}-->
 
-<!--                <a href="{{ url_for('links.dashboard_single', id=user.id) }}" class="btn btn-outline-primary btn-sm mr-0">User</a>-->
-
-<!--                <a href="{{ url_for('users.edit_user', id=user.id) }}" class="btn btn-outline-primary btn-sm ">links</a>-->
-<!--                <a href="{{ url_for('users.edit_user', id=user.id) }}">edit</a>-->
-<!--                    </th><td>-->
