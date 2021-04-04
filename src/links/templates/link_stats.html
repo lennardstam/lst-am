@@ -22,7 +22,7 @@
             </thead>
             <tbody>
 
-        {% for link in links %}
+        {% for link in links.items %}
 
                 <tr>
                     <td>
@@ -49,6 +49,17 @@
             </tbody>
             </table>
 
+        {% for page_num in links.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if links.page == page_num %}
+                    <a class="btn btn-sm btn-primary" href="{{ url_for('links.dashboard_single', id=id, page=page_num) }}">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-sm btn-outline-info" href="{{ url_for('links.dashboard_single', id=id, page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+
+            {% endif %}
+        {% endfor %}
 
         </div>
 <!--    </section>-->

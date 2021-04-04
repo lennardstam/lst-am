@@ -12,7 +12,11 @@
                     <div class="ms-2 me-auto">
                     <div class="account-heading">{{ link.id }}</div>
                          <small class="text-muted">
-                        {{ link.created.strftime('%Y-%m-%d') }} by {{ link.url.username }}
+                        {{ link.created.strftime('%Y-%m-%d') }} by
+                         <a href="{{ url_for('users.edit_user', id=link.url.id) }}">
+                             {{ link.url.username }}
+                         </a>
+
                          </small>
                     </div>
                     <span class="badge bg-primary rounded-pill">{{ link.clicks }}</span>

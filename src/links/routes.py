@@ -45,11 +45,6 @@ def new_link():
         form.url_short.data = url_for('links.new_link', _external=True) + link.url_short
         # form.url_short.data = link.url_short
         return redirect(url_for('links.edit_link', id=link.id))
-        # return render_template('link_create.html', title='new link created', id=link.id,
-        #                        url_short=link.url_short, url_org=url_org, form=form, legend='Short Link')
-    # elif request.method == 'GET':
-    #     return render_template('link_create.html', title='New link', form=form, legend='New Link')
-        # return url_for('links.new_link')
     return render_template('link_create.html', title='New link', form=form, legend='New Link')
 
 
@@ -76,22 +71,30 @@ def redirect_url(url_short):
 @main.route('/link/list/<int:id>', methods=['GET', 'POST'])
 @login_required
 def dashboard_single(id):
-    if current_user.id != 1:
+    # if current_user.id != 1:
+    #     abort(403)
+    if current_user.id == id or current_user.id == 1:
+        # links = Link.query.filter(Link.user_id == id).all()
+        page = request.args.get('page', 1, type=int)
+        links = Link.query.filter(Link.user_id == id).paginate(page=page, per_page=5)
+        # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
+    else:
         abort(403)
-    links = Link.query.filter(Link.user_id == id).all()
-    # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
-    return render_template('link_stats.html', title='Dashboard', links=links) #, link_count=link_count)
+    return render_template('link_stats.html', title='Dashboard', links=links, id=id) #, link_count=link_count)
 
 
-@main.route('/link/list')
-@login_required
-def stats():
-    links = Link.query.filter(Link.user_id == current_user.id).all()
-    if not links:
-        flash('no entries yet', 'success')
-    # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
-    # flash(f'{user_acc}')
-    return render_template('link_stats.html', title='Dashboard', links=links) # , link_count=link_count)
+### depricated
+# @main.route('/link/list')
+# @login_required
+# def stats():
+#     # links = Link.query.filter(Link.user_id == current_user.id).all()
+#     page = request.args.get('page', 1, type=int)
+#     links = Link.query.filter(Link.user_id == current_user.id).paginate(page=page, per_page=5)
+#     if not links:
+#         flash('no entries yet', 'success')
+#     # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
+#     # flash(f'{user_acc}')
+#     return render_template('link_stats.html', title='Dashboard', links=links) # , link_count=link_count)
 
 
 @main.route("/link/<int:id>", methods=['GET', 'POST'])
@@ -151,6 +154,6 @@ def drop_link(id):
         db.session.delete(link)
         db.session.commit()
         flash(f'Link #{id} has been deleted', 'success')
-        return redirect(url_for('links.stats'))
+        return redirect(url_for('links.dashboard_single', id=current_user.id))
     else:
         abort(403)

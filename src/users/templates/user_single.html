@@ -15,7 +15,9 @@
                         {{ form.email.data }}
                          </small>
                     </div>
-                    <span class="badge bg-primary rounded-pill">{{ link_total }}</span>
+
+                    <a href="{{ url_for('links.dashboard_single', id=user.id) }}"><span class="badge bg-info text-dark rounded-pill">{{ link_total }}</span></a>
+<!--                    <span class="badge bg-primary rounded-pill"><a href="{{ url_for('links.dashboard_single', id=user.id) }}">{{ link_total }}</a></span>-->
                 </li>
             </ol>
 
