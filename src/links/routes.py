@@ -66,11 +66,13 @@ def list_links(id):
     if current_user.id == id or current_user.id == 1:
         # links = Link.query.filter(Link.user_id == id).all()
         page = request.args.get('page', 1, type=int)
-        links = Link.query.filter(Link.user_id == id).paginate(page=page, per_page=5)
-        # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
+        links = Link.query.filter(Link.user_id == id).order_by(Link.created.desc()).paginate(page=page, per_page=5)
+        # links = Link.query.filter(Link.user_id == id).paginate(page=page, per_page=5)
+        link_count = db.session.query(db.func.count()).filter(Link.user_id == id).scalar()
+        # flash(f'{link_count}')
     else:
         abort(403)
-    return render_template('links/list.html', title='Dashboard', links=links, id=id) #, link_count=link_count)
+    return render_template('links/list.html', title='Dashboard', links=links, id=id, link_count=link_count)
 
 
 @main.route("/link/<int:id>", methods=['GET', 'POST'])

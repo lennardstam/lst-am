@@ -18,7 +18,8 @@ def list_users():
         abort(403)
     page = request.args.get('page', 1, type=int)
     link_count = db.session.query(User, Link, func.count(Link.id)).outerjoin(Link, User.id == Link.user_id).group_by(User.id).paginate(page=page, per_page=5)
-    return render_template('users/list.html', title='Users', link_count=link_count)
+    user_count = User.query.filter(User.id).count()
+    return render_template('users/list.html', title='Users', link_count=link_count, user_count=user_count)
 
 
 @users.route("/register", methods=['GET', 'POST'])
