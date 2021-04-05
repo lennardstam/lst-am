@@ -12,12 +12,13 @@ users = Blueprint('users', __name__, template_folder='templates')
 
 @users.route('/list', methods=['GET'])
 @login_required
-def all_users():
+# def all_users():
+def list_users():
     if current_user.id != 1:
         abort(403)
     page = request.args.get('page', 1, type=int)
     link_count = db.session.query(User, Link, func.count(Link.id)).outerjoin(Link, User.id == Link.user_id).group_by(User.id).paginate(page=page, per_page=5)
-    return render_template('user_stats.html', title='Users', link_count=link_count)
+    return render_template('users/list.html', title='Users', link_count=link_count)
 
 
 @users.route("/register", methods=['GET', 'POST'])
@@ -34,7 +35,7 @@ def register():
         db.session.commit()
         flash(f'Account has been created for {form.username.data}', 'success')
         return redirect(url_for('users.login'))
-    return render_template('user_register.html', title='Register', form=form)
+    return render_template('users/register.html', title='Register', form=form)
 
 
 @users.route("/login", methods=['GET', 'POST'])
@@ -50,7 +51,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('links.new_link'))
         else:
             flash('Login failed', 'danger')
-    return render_template('user_login.html', title='login', form=form)
+    return render_template('users/login.html', title='login', form=form)
 
 
 @users.route("/logout")
@@ -63,9 +64,9 @@ def logout():
 @login_required
 def account():
     form = UpdateAccountForm()
-    if current_user.username == "demo" and request.method == 'POST':
-        flash('This demo account is static.', 'warning')
-        return redirect(url_for('users.account'))
+    # if current_user.username == "demo" and request.method == 'POST':
+    #     flash('This demo account is static.', 'warning')
+    #     return redirect(url_for('users.account'))
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
@@ -77,8 +78,8 @@ def account():
         form.email.data = current_user.email
         link_total = User.link_count(current_user.id)
     # return render_template('DEL_user_account.html', title='Account', form=form)
-        return render_template('user_single.html', user=current_user, form=form, link_total=link_total)
-    return render_template('user_single.html', user=current_user, form=form)
+        return render_template('users/edit.html', user=current_user, form=form, link_total=link_total)
+    return render_template('users/edit.html', user=current_user, form=form)
 
 
 @users.route("/<int:id>", methods=['GET', 'POST'])
@@ -87,20 +88,16 @@ def edit_user(id):
     form = AdminUpdateAccountForm()
     user = User.query.get_or_404(id)
     link_total = User.link_count(user.id)
-    # if form.validate_on_submit() and current_user.id == id or current_user.id == 1:
-    # if form.validate_on_submit() and current_user.id == id or current_user.id == 1:
-    # if current_user.id == id or current_user.id == 1:
-    # if request.method == 'POST' and current_user.id == id or current_user.id == 1:
     if request.method == 'POST':
         # if user.username != form.username.data and user.email != form.email.data:
         if form.username.data != user.username:
-            user = User.query.filter_by(username=form.username.data).first()
-            if user:
+            check_user = User.query.filter_by(username=form.username.data).first()
+            if check_user:
                 flash('Username already exists.', 'warning')
                 return redirect(url_for('users.edit_user', id=id, user=user, form=form, link_total=link_total))
         if form.email.data != user.email:
-            email = User.query.filter_by(email=form.email.data).first()
-            if email:
+            check_email = User.query.filter_by(email=form.email.data).first()
+            if check_email:
                 flash('Email already in use.', 'warning')
                 return redirect(url_for('users.edit_user', id=id, user=user, form=form, link_total=link_total))
         if form.validate_on_submit():
@@ -113,7 +110,7 @@ def edit_user(id):
         form.username.data = user.username
         form.email.data = user.email
         # link_total = User.link_count(user.id)
-        return render_template('user_single.html', user=user, form=form, link_total=link_total)
+        return render_template('users/edit.html', user=user, form=form, link_total=link_total)
     else:
         abort(403)
 

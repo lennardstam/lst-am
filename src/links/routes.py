@@ -33,10 +33,10 @@ def new_link():
         pattern = re.compile("\s+")
         if url_short != None and pattern.search(url_short):
             flash('This URL is invalid ', 'danger')
-            return render_template('link_create.html', title='New link', form=form, legend='New Link')
+            return render_template('create.html', title='New link', form=form, legend='New Link')
         if Link.query.filter_by(url_short=url_short).first():
             flash('This url already exists ', 'danger')
-            return render_template('link_create.html', title='New link', form=form, legend='New Link')
+            return render_template('create.html', title='New link', form=form, legend='New Link')
         link = Link(url_org=url_org, url=current_user, url_short=url_short)
         db.session.add(link)
         db.session.commit()
@@ -45,7 +45,7 @@ def new_link():
         form.url_short.data = url_for('links.new_link', _external=True) + link.url_short
         # form.url_short.data = link.url_short
         return redirect(url_for('links.edit_link', id=link.id))
-    return render_template('link_create.html', title='New link', form=form, legend='New Link')
+    return render_template('links/create.html', title='New link', form=form, legend='New Link')
 
 
 @main.route('/<url_short>')
@@ -54,23 +54,13 @@ def redirect_url(url_short):
     link.clicks = link.clicks + 1
     db.session.commit()
     # return redirect(link.url_org)
-    return render_template('link_redirect.html', redirect_path=link.url_org)
-
-
-# @main.route('/link/stats')
-# @login_required
-# def dashboard():
-#     if current_user.id != 1:
-#         abort(403)
-#     links = Link.query.all()
-#     if not links:
-#         flash('no entries yet', 'success')
-#     return render_template('link_stats.html', title='Dashboard', links=links)
+    return render_template('links/redirect.html', redirect_path=link.url_org)
 
 
 @main.route('/link/list/<int:id>', methods=['GET', 'POST'])
 @login_required
-def dashboard_single(id):
+# def dashboard_single(id):
+def list_links(id):
     # if current_user.id != 1:
     #     abort(403)
     if current_user.id == id or current_user.id == 1:
@@ -80,21 +70,7 @@ def dashboard_single(id):
         # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
     else:
         abort(403)
-    return render_template('link_stats.html', title='Dashboard', links=links, id=id) #, link_count=link_count)
-
-
-### depricated
-# @main.route('/link/list')
-# @login_required
-# def stats():
-#     # links = Link.query.filter(Link.user_id == current_user.id).all()
-#     page = request.args.get('page', 1, type=int)
-#     links = Link.query.filter(Link.user_id == current_user.id).paginate(page=page, per_page=5)
-#     if not links:
-#         flash('no entries yet', 'success')
-#     # link_count = db.session.query(db.func.count()).filter(Link.user_id == current_user.id).scalar()
-#     # flash(f'{user_acc}')
-#     return render_template('link_stats.html', title='Dashboard', links=links) # , link_count=link_count)
+    return render_template('links/list.html', title='Dashboard', links=links, id=id) #, link_count=link_count)
 
 
 @main.route("/link/<int:id>", methods=['GET', 'POST'])
@@ -123,27 +99,7 @@ def edit_link(id):
         form.url_org.data = link.url_org
         form.url_short.data = link.url_short
     # return render_template("create_post.html", title='Update Post', form=form, legend='Update Post')
-    return render_template('link_single.html', url_org=link.url_org, link=link, form=form, title='Update',legend='Update Link')
-
-
-# @links.route("/link/<int:id>/update", methods=['GET', 'POST'])
-# @login_required
-# def update_link(id):
-#     link = Link.query.get_or_404(id)
-#     if link.url != current_user:
-#         abort(403)
-#     form = LinkUpdate()
-#     if form.validate_on_submit():
-#         link.url_org = form.url_org.data
-#         link.url_short = form.url_short.data
-#         db.session.commit()
-#         flash('Link has been updated', 'success')
-#         # return redirect(url_for('update_link', id=link.id))
-#         return redirect(url_for('links.edit_link', id=link.id))
-#     elif request.method == 'GET':
-#         form.url_org.data = link.url_org
-#         form.url_short.data = link.url_short
-#     return render_template('DEL_link_update.html', title='update link', form=form, legend='Update Link')
+    return render_template('links/edit.html', url_org=link.url_org, link=link, form=form, title='Update',legend='Update Link')
 
 
 @main.route("/link/drop/<int:id>", methods=['POST'])

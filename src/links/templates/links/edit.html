@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!--    <h1>edit.html</h1>-->
+
+
+    <div class="content-section">
+
+<!--card-->
+         <ol class="list-group list-group-numbered pb-5">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                    <div class="account-heading">{{ link.id }}</div>
+                         <small class="text-muted">
+                        {{ link.created.strftime('%Y-%m-%d') }} by
+                         <a href="{{ url_for('users.edit_user', id=link.url.id) }}">
+                             {{ link.url.username }}
+                         </a>
+
+                         </small>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{ link.clicks }}</span>
+
+                </li>
+            </ol>
+
+        <!--{{ request.host_url }}{{ request.full_path }}-->
+<!--form-->
+        <form method="post" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+<!--                <legend class="border-bottom mb-4">{{ legend }}</legend>-->
+
+                <div class="form-group">
+                    {{ form.url_org.label(class="form-control-label") }}
+                    {% if form.url_org.errors %}
+                        {{ form.url_org(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.url_org.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.url_org(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    {{ form.url_short.label(class="form-control-label") }}
+                    {% if form.url_short.errors %}
+                        {{ form.url_short(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.url_short.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.url_short(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+            </fieldset>
+
+
+
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary btn-sm") }}
+<!--                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('links.edit_link', id=link.id) }}">Update</a>-->
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                <a class="btn btn-secondary btn-sm" href="{{ url_for('links.new_link') }}{{ link.url_short }}" target="_blank">visit</a>
+            </div>
+
+        </form>
+    </div>
+
+<!--END-->
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete link?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <form action="{{ url_for('links.drop_link', id=link.id) }}" method="post">
+            <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

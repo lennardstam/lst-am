@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!--<h1>list.html</h1>-->
+
+    <section class="section">
+    <div class="content-section">
+        <legend class="border-bottom mb-4"> Users </legend>
+
+            <table class="table table-sm">
+            <thead>
+                <tr >
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Links</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+
+        {% for link in link_count.items %}
+
+            <tr>
+                <td>
+                    {{ link[0].id }}
+                </td><td>
+                    <a href="{{ url_for('users.edit_user', id=link[0].id) }}">{{ link[0].username }}</a>
+                </td><td>
+                    {{ link[0].created.strftime('%Y-%m-%d') }}
+                </td><td>
+                    <a href="{{ url_for('links.list_links', id=link[0].id) }}">{{ link[2] }}</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+
+
+            </tbody>
+            </table>
+
+        {% for page_num in link_count.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if link_count.page == page_num %}
+                    <a class="btn btn-sm btn-primary" href="{{ url_for('users.list_users', page=page_num) }}">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-sm btn-outline-info" href="{{ url_for('users.list_users', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+
+            {% endif %}
+        {% endfor %}
+
+
+        </div>
+    </section>
+
+{% endblock content %}
+

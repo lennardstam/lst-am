@@ -32,8 +32,8 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated and current_user.id == 1 %}
-                <a class="nav-item nav-link" href="{{ url_for('users.all_users') }}">Users</a>
-                 <a class="nav-item nav-link" href="{{ url_for('links.dashboard_single', id=current_user.id) }}">Stats</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.list_users') }}">Users</a>
+                 <a class="nav-item nav-link" href="{{ url_for('links.list_links', id=current_user.id) }}">Stats</a>
                 <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
                 <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
                 <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
