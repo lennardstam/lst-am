@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 
 from src import db, bcrypt
-from src.users.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from src.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, AdminUpdateAccountForm
 from src.users.models import User
 from src.links.models import Link
 
@@ -15,7 +15,6 @@ users = Blueprint('users', __name__, template_folder='templates')
 def all_users():
     if current_user.id != 1:
         abort(403)
-    # link_count = db.session.query(User, Link, func.count(Link.id)).outerjoin(Link, User.id == Link.user_id).group_by(User.id).all()
     page = request.args.get('page', 1, type=int)
     link_count = db.session.query(User, Link, func.count(Link.id)).outerjoin(Link, User.id == Link.user_id).group_by(User.id).paginate(page=page, per_page=5)
     return render_template('user_stats.html', title='Users', link_count=link_count)
@@ -60,25 +59,6 @@ def logout():
     return redirect(url_for('links.new_link'))
 
 
-# @users.route("/account", methods=['GET', 'POST'])
-# @login_required
-# def account():
-#     form = UpdateAccountForm()
-#     if current_user.username == "demo" and request.method == 'POST':
-#         flash('This demo account is static.', 'warning')
-#         return redirect(url_for('users.account'))
-#     if form.validate_on_submit():
-#         current_user.username = form.username.data
-#         current_user.email = form.email.data
-#         db.session.commit()
-#         flash('account updated', 'success')
-#         return redirect(url_for('users.account'))
-#     elif request.method == 'GET':
-#         form.username.data = current_user.username
-#         form.email.data = current_user.email
-#     return render_template('DEL_user_account.html', title='Account', form=form)
-
-
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
@@ -104,23 +84,35 @@ def account():
 @users.route("/<int:id>", methods=['GET', 'POST'])
 @login_required
 def edit_user(id):
-    form = UpdateAccountForm()
-    # if current_user.id != 1:
-    #     abort(403)
+    form = AdminUpdateAccountForm()
     user = User.query.get_or_404(id)
+    link_total = User.link_count(user.id)
+    # if form.validate_on_submit() and current_user.id == id or current_user.id == 1:
     # if form.validate_on_submit() and current_user.id == id or current_user.id == 1:
     # if current_user.id == id or current_user.id == 1:
     # if request.method == 'POST' and current_user.id == id or current_user.id == 1:
     if request.method == 'POST':
-        user.username = form.username.data
-        user.email = form.email.data
-        db.session.commit()
-        flash('account updated', 'success')
-        return redirect(url_for('users.edit_user', id=id))
+        # if user.username != form.username.data and user.email != form.email.data:
+        if form.username.data != user.username:
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                flash('Username already exists.', 'warning')
+                return redirect(url_for('users.edit_user', id=id, user=user, form=form, link_total=link_total))
+        if form.email.data != user.email:
+            email = User.query.filter_by(email=form.email.data).first()
+            if email:
+                flash('Email already in use.', 'warning')
+                return redirect(url_for('users.edit_user', id=id, user=user, form=form, link_total=link_total))
+        if form.validate_on_submit():
+            user.username = form.username.data
+            user.email = form.email.data
+            db.session.commit()
+            flash('account updated', 'success')
+            return redirect(url_for('users.edit_user', id=id))
     if request.method == 'GET' and current_user.id == id or current_user.id == 1:
         form.username.data = user.username
         form.email.data = user.email
-        link_total = User.link_count(user.id)
+        # link_total = User.link_count(user.id)
         return render_template('user_single.html', user=user, form=form, link_total=link_total)
     else:
         abort(403)
@@ -138,5 +130,5 @@ def drop_user(id):
         db.session.delete(data)
     db.session.delete(user_acc)
     db.session.commit()
-    # flash(f'Link {id} has been deleted')
+    flash(f'User {user_acc.username} has been deleted', 'success')
     return redirect(url_for('users.all_users'))

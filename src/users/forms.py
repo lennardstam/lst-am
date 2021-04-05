@@ -45,9 +45,16 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError('Username is taken')
-
+    #
     def validate_email(self, email):
         if email.data != current_user.email:
-            user = User.query.filter_by(email=email.data).first()
-            if user:
+            email = User.query.filter_by(email=email.data).first()
+            if email:
                 raise ValidationError('Email address is taken')
+
+
+class AdminUpdateAccountForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Update')
