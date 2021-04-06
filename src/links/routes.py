@@ -8,6 +8,7 @@ from src.extensions import db, login_manager
 from src.links.forms import UrlCreate, LinkUpdate  # UrlCreated, UrlSubmit
 from src.links.models import Link
 
+
 main = Blueprint('links', __name__, template_folder='templates')
 
 
@@ -28,7 +29,7 @@ def new_link():
             return redirect(url_for('users.login'))
         count = Link.query.count()
         if count > 100:
-            flash(f'Maximum Links ({count}) reached. Delete links before add new', 'danger')
+            flash(f'Maximum Links ({count -1}) reached. Delete links before add new', 'danger')
             return redirect(url_for('links.new_link'))
         pattern = re.compile("\s+")
         if url_short != None and pattern.search(url_short):
@@ -72,7 +73,7 @@ def list_links(id):
         # flash(f'{link_count}')
     else:
         abort(403)
-    return render_template('links/list.html', title='Dashboard', links=links, id=id, link_count=link_count)
+    return render_template('links/list.html', title='Links', links=links, id=id, link_count=link_count)
 
 
 @main.route("/link/<int:id>", methods=['GET', 'POST'])
@@ -112,6 +113,6 @@ def drop_link(id):
         db.session.delete(link)
         db.session.commit()
         flash(f'Link #{id} has been deleted', 'success')
-        return redirect(url_for('links.dashboard_single', id=current_user.id))
+        return redirect(url_for('links.list_links', id=current_user.id))
     else:
         abort(403)
