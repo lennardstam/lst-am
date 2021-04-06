@@ -62,7 +62,7 @@ class User(db.Model, UserMixin):
         if not User.query.filter(User.username == 'admin').first():
             # hashed_password = User.password_create('admin')
             hashed_password = bcrypt.generate_password_hash('admin').decode('utf-8')
-            user1 = User(username='admin', password=hashed_password, email='admin@example.com')
+            user1 = User(username='admin', password=hashed_password, email='admin@lst.am')
             db.session.add(user1)
             db.session.commit()
         # else:
