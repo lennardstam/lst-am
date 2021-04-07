@@ -11,7 +11,8 @@ class Config(object):
 
     # SERVER_NAME = '127.0.0.1'
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(24)
-    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_SERVER = 'mailu_front_1'
+    # MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     # MAIL_USERNAME = os.environ.get('EMAIL_USER') or 'unset'

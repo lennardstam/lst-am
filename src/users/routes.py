@@ -67,7 +67,7 @@ def logout():
 @login_required
 def account():
     form = UpdateAccountForm()
-    ### DEMO
+    '''Admin user edit lock'''
     if current_user.id == 1 and request.method == 'POST':
         flash('This account is static.', 'warning')
         return redirect(url_for('users.account'))
@@ -176,7 +176,7 @@ def reset_token(token):
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('Password Reset Request', sender='lennardstam@gmail.com', recipients=[user.email])
+    msg = Message('Password Reset Request', sender='passwordhelp@lst.am', recipients=[user.email])
     msg.body = f'''To reset your password, please visit the following url:
 {url_for('users.reset_token', token=token, _external=True)}
 '''
