@@ -11,6 +11,8 @@ Username: `admin@lst.am`
 Password: `admin`   
 Database be restored daily.
 
+![Screenshot](https://raw.githubusercontent.com/lennardstam/lst-am/main/screenshot.gif)
+
 #### Features
 
   * URL shortener
