@@ -6,10 +6,11 @@ lst.am is an self hosted URL shortener made in Flask.
 
 #### Demo
 
-[demo](https://demo.lst.am/)   
+[demo.lst.am](https://demo.lst.am/)   
+_Database will be restored daily._  
+
 Username: `admin@lst.am`  
 Password: `admin`   
-Database be restored daily.
 
 ![Screenshot](screenshot.gif)
 
@@ -46,16 +47,16 @@ For docker-compose, run `docker-compose up -d`
 
 **Manual**(from source)
 
-Clone git clone https://github.com/lennardstam/lst-am.git & cd  lst-am   
-(Optional) Install virtualenv (optional but recommended)  
-	virtualenv -p python3 env  
-	source env/bin/activate  
-Install dependencies: pip3 install -r requirements.txt  
-python run.py (It runs Flask app using Werkzeug. Gunicorn not yet added)  
+Clone `git clone https://github.com/lennardstam/lst-am.git` & `cd lst-am`  
+(Optional) `Install virtualenv` (optional but recommended)  
+	`virtualenv -p python3 env`  
+	`source env/bin/activate`  
+Install dependencies: `pip3 install -r requirements.txt`  
+`python3 run.py` (It runs Flask app using Werkzeug. Gunicorn not yet added)  
 
 **Access**
 
-Visit 127.0.0.1:5000 in your browser to use the app  
+Visit `127.0.0.1:5000` in your browser to use the app  
 Use the following credentials:  
 Username: `admin@lst.am`  
 Password: `admin`  
@@ -63,6 +64,7 @@ Password: `admin`
 
 #### Notes
 
-This project is in early development. Therefor features and configuration settings are limted  
+This project is in early development. Therefore features and configuration settings are limited  
 Logging is not yet available.  
 Role based user access is static. User with id 1, is admin.  
+Guest usage is not possible yet
