@@ -2,11 +2,11 @@
 
 {% block content %}
 
-<!--    <section class="section">-->
+    <section class="section">
         <div class="content-section">
-
                     <legend class="border-bottom mb-4"> Stored Links ({{link_count}})</legend>
 
+        <div class="table-responsive">
             <table class="table table-hover table-sm">
             <thead>
                 <tr>
@@ -48,7 +48,8 @@
 
             </tbody>
             </table>
-
+        </div>
+            
         {% for page_num in links.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if page_num %}
                 {% if links.page == page_num %}
@@ -62,6 +63,6 @@
         {% endfor %}
 
         </div>
-<!--    </section>-->
+    </section>
 
 {% endblock content %}

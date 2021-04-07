@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request,
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 from flask_mail import Message
-
+import os
 from src import db, bcrypt, mail
 from src.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm, AdminUpdateAccountForm,
                              RequestResetForm, ResetPasswordForm)
@@ -170,6 +170,5 @@ def send_reset_email(user):
     msg = Message('Password Reset Request', sender='lennardstam@gmail.com', recipients=[user.email])
     msg.body = f'''To reset your password, please visit the following url:
 {url_for('users.reset_token', token=token, _external=True)}
-more text
 '''
     mail.send(msg)

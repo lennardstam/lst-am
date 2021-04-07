@@ -1,0 +1,16 @@
+---
+version: '3'
+
+services:
+
+  lst-am:
+    image: lstam
+    build: .
+    ports:
+      - "127.0.0.1:5000:5000"
+    container_name: lst.am
+#    network_mode: bridge
+#    external_links:
+#      - mailu_front_1:mail
+    restart: unless-stopped
+
