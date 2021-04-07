@@ -67,9 +67,10 @@ def logout():
 @login_required
 def account():
     form = UpdateAccountForm()
-    # if current_user.username == "demo" and request.method == 'POST':
-    #     flash('This demo account is static.', 'warning')
-    #     return redirect(url_for('users.account'))
+    ### DEMO
+    if current_user.id == 1 and request.method == 'POST':
+        flash('This account is static.', 'warning')
+        return redirect(url_for('users.account'))
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
@@ -92,6 +93,10 @@ def edit_user(id):
     user = User.query.get_or_404(id)
     link_total = User.link_count(user.id)
     if request.method == 'POST':
+        '''Admin user edit lock'''
+        # if user.id == 1:
+        #     flash('This account is static.', 'warning')
+        #     return redirect(url_for('users.edit_user', id=id))
         # if user.username != form.username.data and user.email != form.email.data:
         if form.username.data != user.username:
             check_user = User.query.filter_by(username=form.username.data).first()
@@ -125,6 +130,10 @@ def drop_user(id):
         abort(403)
     user_acc = User.query.get_or_404(id)
     user_urls = Link.query.filter_by(user_id=id).all()    # if link.url != current_user:
+    '''Admin user delete lock'''
+    if user_acc.id == 1:
+        flash('Admin account cant not be deleted', 'warning')
+        return redirect(url_for('users.edit_user', id=id))
     #     abort(403)
     for data in user_urls:
         db.session.delete(data)
