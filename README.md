@@ -1,9 +1,15 @@
 # lst.am
----
 
 #### Overview
 
 lst.am is an self hosted URL shortener made in Flask.
+
+#### Demo
+
+[demo](https://demo.lst.am/)   
+Username: `admin@lst.am`  
+Password: `admin`   
+Database be restored daily.
 
 #### Features
 
@@ -22,12 +28,6 @@ lst.am is an self hosted URL shortener made in Flask.
   * Libs: SQLAlchmey, JWT
   * Docker
   * Docker-compose
-
-#### Demo
-
-[demo](https://demo.lst.am/)   
-Username: `admin@lst.am`  
-Password: `admin`  
 
 #### Configuration
 
