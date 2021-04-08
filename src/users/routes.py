@@ -143,6 +143,24 @@ def drop_user(id):
     return redirect(url_for('users.list_users'))
 
 
+@users.route("/password", methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ResetPasswordForm()
+    '''Admin user edit lock'''
+    # if current_user.id == 1 and request.method == 'POST':
+    #     flash('This account is static.', 'warning')
+    #     return redirect(url_for('users.account'))
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User.query.get_or_404(current_user.id)
+        user.password = hashed_password
+        db.session.commit()
+        flash('The password has been updated', 'success')
+        return redirect(url_for('users.login'))
+    return render_template('users/reset_token.html', title='Reset Password', form=form)
+
+
 @users.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:

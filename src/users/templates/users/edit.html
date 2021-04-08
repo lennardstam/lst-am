@@ -72,7 +72,14 @@
     </div>
 </article>
 
+{% if current_user.is_authenticated and current_user.username == form.username.data %}
 
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{{ url_for('users.change_password') }}">Change Password</a>
+        </small>
+    </div>
+{% endif %}
 
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
